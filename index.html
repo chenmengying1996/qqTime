@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				/*box-sizing: border-box;*/
+				font-size:12px;
+				font-family: "微软雅黑";
+				color: #666;
+				outline: none;
+			}
+			body {
+				background: url(images/body_bg.jpg);
+			}
+			.timeline {
+				/*width:935px;
+				height:230px;*/
+				margin:0 auto;
+				/*border:1px solid #fff;*/
+				position:relative;
+				/*现在要让里面的t-send在中间部分，可以把t-send盒子看做内容，这样就可以用padding了
+				 或者直接在t-send中用margin*/
+				/*用padding的话，因为ie7及以下也不支持box-sizing: border-box;所以一定要记得高度和宽度要减*/
+				padding: 33px 0 0 165px;
+			}
+			.t-line {
+				width: 5px;
+				height: 1000px;
+				background-color: #FFFFFF;
+				position:absolute;
+				top: 100px;
+				left: 200px;
+			}
+			.t-send {
+				width: 700px;
+				height: 200px;
+				/*border: 1px solid red;*/
+				/*margin: 70px 0 0 165px;*/
+				/*但是用margin的话ie7及以下就不兼容例如*/
+			}
+			.timeline .t-send .t-header ,
+			.t_all .t_list .t-header{
+				float: left;
+			}
+			.timeline .t-send .t-header img,
+			.t_all .t_list img {
+				border-radius:50%;
+			}
+			.timeline .t-send .t-icon,
+			.timeline .t_all .t_list .t_icon {
+				width: 13px;
+				height: 16px;
+				background: url(images/sanjiao1.png) no-repeat;
+				float: left;
+				margin: 25px 0 0 10px;
+			}
+			.timeline .t-send .t-box {
+				width: 600px;
+				height: 165px;
+				background-color: #FFFFFF;
+				/*如果这里不给浮动，那么t-box盒子会跑到timeline盒子的最左边，因为前两个盒子都是浮动的，而浮动的盒子又不占位置*/
+				float: left;
+				border-radius:5px;
+				position: relative;
+			}
+			.timeline .t-send .t-box .t_title {
+				/*用了padding只是把t_tittle撑大了，t_box大小不变，所以不用担心*/
+				padding: 10px 0 15px 15px;
+			}
+			.timeline .t-send .t-box .t_message {
+				width: 560px;
+				height: 60px;
+				border: 1px solid #ddd;
+				margin: 0 auto;
+				padding: 10px 0 0 10px;
+				font-size: 14px;
+			}
+			.timeline .t-send .t-box .face .t_gif {
+				float: left;
+				/*display: inline-block;*/
+				margin: 15px 0 0 15px;
+			}
+			.timeline .t-send .t-box .face .t_btn {
+				text-decoration: none;
+				display: block;
+				width: 80px;
+				height: 32px;
+				background: #f90;
+				line-height: 32px;
+				color: #FFFFFF;
+				font-size: 14px;
+				float: right;
+				margin: 10px 15px 0 0;
+				text-align: center;
+				border-radius: 3px;
+				transition: background-color 1s;
+				-webkit-transition:background-color 1s; 
+				-moz-transition: background-color 1s;
+				-ms-transition: background-color 1s;
+			}
+			.timeline .t-send .t-box .face .t_btn:hover {
+				background-color: #f60;
+			}
+			.timeline .t-send .t-box .t_face_box {
+				width: 365px;
+				height: 180px;
+				background-color: #FFFFFF;
+				/*加了阴影会发现这个盒子跑到a表情那里去了，是因为a标签是浮动，不占位置*/
+				box-shadow: 1px 1px 5px -1px #000;
+				-webkit-box-shadow: 1px 1px 5px -1px #000;
+				-moz-box-shadow:1px 1px 5px -1px #000;
+				-ms-box-shadow:1px 1px 5px -1px #000;
+				position: absolute;
+				top: 156px;
+				left: 24px;
+				display: none;
+				z-index: 1;
+			}
+			.timeline .t-send .t-box .t_face_box #q_ul {
+				list-style: none;
+			}
+			.timeline .t-send .t-box .t_face_box #q_ul li {
+				/*border: 1px solid red;*/
+				float: left;
+				margin: 2px;
+				cursor: pointer;
+			}
+			/*此时头像被压在线下面了，我们可以想到用z-index但是我们知道z-index起作用的前提是定位，即两个盒子都有定位的前提下，一个用z-index层级变高了，他就上去了*/
+			.timeline .t_all  {
+				position: relative;
+			}
+			.timeline .t_all .t_list {
+				margin: 20px 0;
+			}
+			.timeline .t_all .t_list .t_icon{
+				width: 13px;
+				height: 16px;
+			}
+			.timeline .t_all .t_list .t_msg {
+				/*width: 500px;
+				height: 60px;*/
+				background-color: #FFFFFF;
+				border-radius: 3px;
+				float: left;
+				padding: 20px;
+				font-size: 14px;
+				position: relative;
+				
+			}
+			.timeline .t_all .t_list .t_msg img {
+				margin: 2px;
+				vertical-align: middle;
+			}
+			/*清除浮动*/
+			.clear {
+				clear: both;
+			}
+			/*添加了表情之后*/
+			.timeline .t-send .t-box .t_message img{
+				margin: 2px;
+				vertical-align: middle;
+			}
+			
+		</style>
+		<link rel="stylesheet" href="css/animate.css" />
+	</head>
+	<body>
+		<div class="timeline">
+			<div class="t-line"></div>
+			<div class="t-send">
+				<div class="t-header">
+					<img src="images/headicon.jpg" alt="头像" width="66" height="66"/>
+				</div>
+				<div class="t-icon"></div>
+				<div class="t-box">
+					<p class="t_title">有什么新鲜事想告诉大家？</p>
+					<!--本来是div盒子，加了contenteditable="true"这个属性之后，点击之后变成了文本框-->
+					<!--contenteditable 属性规定是否可编辑元素的内容。-->
+					<div class="t_message" contenteditable="true"></div>
+					<p class="face">
+						<a href="javascript:void(0)" class="t_gif"><img src="images/face/bba_thumb.gif" alt="表情" width="22" height="22"></a>
+						<a href="javascript:void(0)" class="t_btn">发表</a>
+					</p>
+					<div class="t_face_box">
+						<ul id="q_ul">
+						<li><img src="images/face/zz2_thumb.gif" title="[织]" width="22" height="22"></li>
+						<li><img src="images/face/horse2_thumb.gif" title="[神马]"></li>
+						<li><img src="images/face/fuyun_thumb.gif" title="[浮云]"></li>
+						<li><img src="images/face/geili_thumb.gif" title="[给力]"></li>
+						<li><img src="images/face/wg_thumb.gif" title="[围观]"></li>
+						<li><img src="images/face/vw_thumb.gif" title="[威武]"></li>
+						<li><img src="images/face/panda_thumb.gif" title="[熊猫]"></li>
+						<li><img src="images/face/rabbit_thumb.gif" title="[兔子]"></li>
+						<li><img src="images/face/otm_thumb.gif" title="[奥特曼]"></li>
+						<li><img src="images/face/j_thumb.gif" title="[囧]"></li>
+						<li><img src="images/face/hufen_thumb.gif" title="[互粉]"></li>
+						<li><img src="images/face/liwu_thumb.gif" title="[礼物]"></li>
+						<li><img src="images/face/smilea_thumb.gif" title="[呵呵]"></li>
+						<li><img src="images/face/tootha_thumb.gif" title="[嘻嘻]"></li>
+						<li><img src="images/face/laugh.gif" title="[哈哈]"></li>
+						<li><img src="images/face/tza_thumb.gif" title="[可爱]"></li>
+						<li><img src="images/face/kl_thumb.gif" title="[可怜]"></li>
+						<li><img src="images/face/kbsa_thumb.gif" title="[挖鼻屎]"></li>
+						<li><img src="images/face/cj_thumb.gif" title="[吃惊]"></li>
+						<li><img src="images/face/shamea_thumb.gif" title="[害羞]"></li>
+						<li><img src="images/face/zy_thumb.gif" title="[挤眼]"></li>
+						<li><img src="images/face/bz_thumb.gif" title="[闭嘴]"></li>
+						<li><img src="images/face/bs2_thumb.gif" title="[鄙视]"></li>
+						<li><img src="images/face/lovea_thumb.gif" title="[爱你]"></li>
+						<li><img src="images/face/sada_thumb.gif" title="[泪]"></li>
+						<li><img src="images/face/heia_thumb.gif" title="[偷笑]"></li>
+						<li><img src="images/face/qq_thumb.gif" title="[亲亲]"></li>
+						<li><img src="images/face/sb_thumb.gif" title="[生病]"></li>
+						<li><img src="images/face/mb_thumb.gif" title="[太开心]"></li>
+						<li><img src="images/face/ldln_thumb.gif" title="[懒得理你]"></li>
+						<li><img src="images/face/yhh_thumb.gif" title="[右哼哼]"></li>
+						<li><img src="images/face/zhh_thumb.gif" title="[左哼哼]"></li>
+						<li><img src="images/face/x_thumb.gif" title="[嘘]"></li>
+						<li><img src="images/face/cry.gif" title="[衰]"></li>
+						<li><img src="images/face/wq_thumb.gif" title="[委屈]"></li>
+						<li><img src="images/face/t_thumb.gif" title="[吐]"></li>
+						<li><img src="images/face/k_thumb.gif" title="[打哈气]"></li>
+						<li><img src="images/face/bba_thumb.gif" title="[抱抱]"></li>
+						<li><img src="images/face/angrya_thumb.gif" title="[怒]"></li>
+						<li><img src="images/face/yw_thumb.gif" title="[疑问]"></li>
+						<li><img src="images/face/cza_thumb.gif" title="[馋嘴]"></li>
+						<li><img src="images/face/88_thumb.gif" title="[拜拜]"></li>
+						<li><img src="images/face/sk_thumb.gif" title="[思考]"></li>
+						<li><img src="images/face/sweata_thumb.gif" title="[汗]"></li>
+						<li><img src="images/face/sleepya_thumb.gif" title="[困]"></li>
+						<li><img src="images/face/sleepa_thumb.gif" title="[睡觉]"></li>
+						<li><img src="images/face/money_thumb.gif" title="[钱]"></li>
+						<li><img src="images/face/sw_thumb.gif" title="[失望]"></li>
+						<li><img src="images/face/cool_thumb.gif" title="[酷]"></li>
+						<li><img src="images/face/hsa_thumb.gif" title="[花心]"></li>
+						<li><img src="images/face/hatea_thumb.gif" title="[哼]"></li>
+						<li><img src="images/face/gza_thumb.gif" title="[鼓掌]"></li>
+						<li><img src="images/face/dizzya_thumb.gif" title="[晕]"></li>
+						<li><img src="images/face/bs_thumb.gif" title="[悲伤]"></li>
+						<li><img src="images/face/crazya_thumb.gif" title="[抓狂]"></li>
+						<li><img src="images/face/h_thumb.gif" title="[黑线]"></li>
+						<li><img src="images/face/yx_thumb.gif" title="[阴险]"></li>
+						<li><img src="images/face/nm_thumb.gif" title="[怒骂]"></li>
+						<li><img src="images/face/hearta_thumb.gif" title="[心]"></li>
+						<li><img src="images/face/unheart.gif" title="[伤心]"></li>
+						<li><img src="images/face/pig.gif" title="[猪头]"></li>
+						<li><img src="images/face/ok_thumb.gif" title="[ok]"></li>
+						<li><img src="images/face/ye_thumb.gif" title="[耶]"></li>
+						<li><img src="images/face/good_thumb.gif" title="[good]"></li>
+						<li><img src="images/face/no_thumb.gif" title="[不要]"></li>
+						<li><img src="images/face/z2_thumb.gif" title="[赞]"></li>
+						<li><img src="images/face/come_thumb.gif" title="[来]"></li>
+						<li><img src="images/face/sad_thumb.gif" title="[弱]"></li>
+						<li><img src="images/face/lazu_thumb.gif" title="[蜡烛]"></li>
+						<li><img src="images/face/clock_thumb.gif" title="[钟]"></li>
+						<li><img src="images/face/cake.gif" title="[蛋糕]"></li>
+						<li><img src="images/face/m_thumb.gif" title="[话筒]"></li>
+						<li><img src="images/face/weijin_thumb.gif" title="[围脖]"></li>
+						<li><img src="images/face/lxhzhuanfa_thumb.gif" title="[转发]"></li>
+						<li><img src="images/face/lxhluguo_thumb.gif" title="[路过这儿]"></li>
+						<li><img src="images/face/bofubianlian_thumb.gif" title="[bofu变脸]"></li>
+						<li><img src="images/face/gbzkun_thumb.gif" title="[gbz困]"></li>
+						<li><img src="images/face/boboshengmenqi_thumb.gif" title="[生闷气]"></li>
+						<li><img src="images/face/chn_buyaoya_thumb.gif" title="[不要啊]"></li>
+						<li><img src="images/face/daxiongleibenxiong_thumb.gif" title="[dx泪奔]"></li>
+						<li><img src="images/face/cat_yunqizhong_thumb.gif" title="[运气中]"></li>
+						<li><img src="images/face/youqian_thumb.gif" title="[有钱]"></li>
+						<li><img src="images/face/cf_thumb.gif" title="[冲锋]"></li>
+						<li><img src="images/face/camera_thumb.gif" title="[照相机]"></li>	
+					</ul>
+					</div>
+				</div>
+			</div>
+			<div class="t_all"></div>
+		</div>
+		
+		<!--引用jquery官方类-->
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script>
+			$(function(){
+				
+				//类似于初始化；一进入页面就获取之前存在sessionStorage中的数据
+				//var msg = sessionStorage.getItem("arry_msg");
+				var msg = localStorage.getItem("arry_msgs");
+				//如果之前存储了数据就显示出来
+				if(msg){
+					$(".t_all").html(msg);
+				}
+				
+				$(".t_gif").on('click',function(){
+					//注意这里toggle()可以用一个函数表示显示和隐藏
+					$(".t_face_box").toggle(500);
+				})
+				
+				//点击表情添加到文本框
+				$("#q_ul").on('click','li',function(){
+					//需求：点击表情包中的表情，文本框中出现该表情
+					//思路：点击该表情时，克隆该表情，然后插入到文本框中
+					var $img=$(this).find('img').clone(true);
+					$img.appendTo($(".t_message"));
+				})
+				
+				//点击发布按钮
+				$('.t_btn').on('click',function(){
+					//注意这里应该取$('.t_message').html()而不是取text(),如果取了text()那么他的表情就不能识别
+					var content=$('.t_message').html();
+//					console.log('content',content);
+					if(content===''){
+						$('.t_message').focus();//如果t_message里面内容为空的话，那么给它获取焦点
+						return;
+					}
+					//注意这里不能写html,如果写html的话相当于替换了整个的内容，而不是添加了内容
+					$('.t_all').prepend('<div class="t_list animated bounceIn">'+
+											'<div class="t-header">'+
+												'<img src="images/headicon.jpg" alt="头像" width="66" height="66"/>'+
+											'</div>'+
+											'<div class="t_icon"></div>'+
+											'<div class="t_msg">'+content+'</div>'+
+											'<div class="clear"></div>'+
+											'</div>');
+//					$('.t_message').html('');
+					$('.t_message').focus();
+					
+					//注意这里是点击事件触动的sessionStorage
+					//存储到浏览器session中,浏览器关闭即消失
+					//sessionStorage.setItem("arry_msg",$(".t_all").html());
+					//存储到本地
+					localStorage.setItem("arry_msgs",$(".t_all").html());
+					localStorage.clear();
+				})
+				
+				
+			
+				
+				
+			})
+		</script>
+	</body>
+</html>
